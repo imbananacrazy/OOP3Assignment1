@@ -2,20 +2,28 @@ package shapes;
 
 public class Pyramid extends Shape
 {
-	public Pyramid(double height)
-	{
-		super(height);
-	}
+    double side;
 
-	@Override
-	double calcBaseArea() 
-	{
-		return 0;
-	}
+    public Pyramid(double height, double side)
+    {
+        super(height);
+        this.side = side;
+    }
 
-	@Override
-	double calcVolume() 
-	{
-		return 0;
-	}
+    public double getSide()
+    {
+        return side;
+    }
+
+    @Override
+    double calcBaseArea()
+    {
+        return side * side;
+    }
+
+    @Override
+    double calcVolume()
+    {
+        return (side * side * getHeight()) / 3.0;
+    }
 }
