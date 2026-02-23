@@ -1,5 +1,7 @@
 package appDomain;
 
+import manager.SortManager;
+
 /**
  * <p>
  * This application driver code is designed to be used as a basis for the
@@ -17,7 +19,7 @@ public class AppDriver
 	 */
 	public static void main( String[] args )
 	{
-		// TODO Auto-generated method stub
+		new SortManager(args);
 
 		// refer to demo00 BasicFileIO.java for a simple example on how to
 		// read data from a text file
@@ -31,7 +33,6 @@ public class AppDriver
 		// refer to demo02 KittySort.java on how to use a custom sorting
 		// algorithm on a list of comparables to sort using either the
 		// natural order (comparable) or other orders (comparators)
-
 	}
 
 }
