@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.util.Comparator;
 
 import shapes.*;
+import utilities.SortUtility;
 
 public class SortManager
 {
@@ -20,17 +21,13 @@ public class SortManager
         {
             String arg = args[i].toLowerCase();
 
-            if(arg.startsWith("-f"))
+            if(arg.startsWith("-f")) fileName = arg.substring(2);
+            else if(arg.startsWith("-t")) compareType = arg.substring(2).charAt(0);
+            else if(arg.startsWith("-s")) sortType = arg.substring(2).charAt(0);
+            else
             {
-                fileName = arg.substring(2);
-            }
-            else if(arg.startsWith("-t"))
-            {
-                compareType = arg.substring(2).charAt(0);
-            }
-            else if(arg.startsWith("-s"))
-            {
-                sortType = arg.substring(2).charAt(0);
+            	System.out.println("Invalid file name argument.");
+            	return;
             }
         }
 
@@ -45,11 +42,11 @@ public class SortManager
     }
 
 
-    private void loadShapes()
+    void loadShapes()
     {
         try
         {
-            File file = new File(fileName);
+        	File file = new File("res/" + fileName);
             Scanner input = new Scanner(file);
 
             int total = input.nextInt();
@@ -113,51 +110,24 @@ public class SortManager
     }
 
 
-    private void sortShapes()
+    void sortShapes()
     {
         Comparator<Shape> comparator;
 
         // choose comparison type
-        if(compareType == 'h')
-        {
-            comparator = (s1, s2) -> s1.compareTo(s2);
-        }
-        else if(compareType == 'a')
-        {
-            comparator = new BaseAreaComparator();
-        }
-        else
-        {
-            comparator = new VolumeComparator();
-        }
+        if(compareType == 'h') comparator = (s1, s2) -> s1.compareTo(s2);
+        else if(compareType == 'a') comparator = new BaseAreaComparator();
+        else comparator = new VolumeComparator();
 
         long startTime = System.nanoTime();
 
         // choose sorting algorithm
-        if(sortType == 'b')
-        {
-            SortUtility.bubbleSort(shapes, comparator);
-        }
-        else if(sortType == 's')
-        {
-            SortUtility.selectionSort(shapes, comparator);
-        }
-        else if(sortType == 'i')
-        {
-            SortUtility.insertionSort(shapes, comparator);
-        }
-        else if(sortType == 'm')
-        {
-            SortUtility.mergeSort(shapes, comparator);
-        }
-        else if(sortType == 'q')
-        {
-            SortUtility.quickSort(shapes, comparator);
-        }
-        else if(sortType == 'z')
-        {
-            SortUtility.heapSort(shapes, comparator);
-        }
+        if(sortType == 'b') SortUtility.bubbleSort(shapes, comparator);
+        else if(sortType == 's') SortUtility.selectionSort(shapes, comparator);
+        else if(sortType == 'i') SortUtility.insertionSort(shapes, comparator);
+        else if(sortType == 'm') SortUtility.mergeSort(shapes, comparator);
+        else if(sortType == 'q') SortUtility.quickSort(shapes, comparator);
+        else if(sortType == 'z') SortUtility.heapSort(shapes, comparator);
         else
         {
             System.out.println("Invalid sort type.");
@@ -167,26 +137,51 @@ public class SortManager
         long endTime = System.nanoTime();
 
         double timeMs = (endTime - startTime) / 1000000.0;
-        System.out.println("Sorting Time: " + timeMs + " ms");
 
         printResults();
+        System.out.println("Sorting Time: " + timeMs + " ms");
     }
 
 
-    private void printResults()
+    private void printResults() 
     {
-        if(shapes.length == 0)
+        if (shapes.length == 0) return;
+        
+        if(compareType == 'h')
         {
-            return;
+        	System.out.printf("First element is: %25s%25s%f%n", shapes[0].getClass().getName(), "Height: ", shapes[0].getHeight());
+
+            for (int i = 999; i < shapes.length; i += 1000) 
+            {
+                System.out.printf("%dth element: %25s%25s%f%n", i + 1, shapes[i].getClass().getName(), "Height: ", shapes[i].getHeight());
+            }
+
+            int lastIndex = shapes.length - 1;
+            System.out.printf("Last element is: %25s%25s%f%n", shapes[lastIndex].getClass().getName(), "Height: ", shapes[lastIndex].getHeight());
         }
-
-        System.out.println("First Value: " + shapes[0].calcVolume());
-
-        for(int i = 1000; i < shapes.length; i = i + 1000)
+        else if(compareType == 'a')
         {
-            System.out.println("Index " + i + ": " + shapes[i].calcVolume());
-        }
+        	System.out.printf("First element is: %25s%25s%f%n", shapes[0].getClass().getName(), "Area: ", shapes[0].calcBaseArea());
 
-        System.out.println("Last Value: " + shapes[shapes.length - 1].calcVolume());
+            for (int i = 999; i < shapes.length; i += 1000) 
+            {
+                System.out.printf("%dth element: %25s%25s%f%n", i + 1, shapes[i].getClass().getName(), "Area: ", shapes[i].calcBaseArea());
+            }
+
+            int lastIndex = shapes.length - 1;
+            System.out.printf("Last element is: %25s%25s%f%n", shapes[lastIndex].getClass().getName(), "Area: ", shapes[lastIndex].calcBaseArea());
+        }
+        else
+        {
+        	System.out.printf("First element is: %25s%25s%f%n", shapes[0].getClass().getName(), "Volume: ", shapes[0].calcVolume());
+
+            for (int i = 999; i < shapes.length; i += 1000) 
+            {
+                System.out.printf("%dth element: %25s%25s%f%n", i + 1, shapes[i].getClass().getName(), "Volume: ", shapes[i].calcVolume());
+            }
+
+            int lastIndex = shapes.length - 1;
+            System.out.printf("Last element is: %25s%25s%f%n", shapes[lastIndex].getClass().getName(), "Volume: ", shapes[lastIndex].calcVolume());
+        }
     }
 }

@@ -14,8 +14,8 @@ public abstract class Shape implements Comparable<Shape>
 		return height;
 	}
 	
-	abstract double calcBaseArea();
-	abstract double calcVolume();
+	public abstract double calcBaseArea();
+	public abstract double calcVolume();
 
 	@Override
     public int compareTo(Shape that) 

@@ -8,7 +8,7 @@ public class SquarePrism extends Prism
 	}
 
 	@Override
-	double calcBaseArea() 
+	public double calcBaseArea() 
 	{
 		return getSide() * getSide();
 	}

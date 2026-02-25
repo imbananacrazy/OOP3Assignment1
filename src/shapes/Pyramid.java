@@ -16,13 +16,13 @@ public class Pyramid extends Shape
     }
 
     @Override
-    double calcBaseArea()
+    public double calcBaseArea()
     {
         return side * side;
     }
 
     @Override
-    double calcVolume()
+    public double calcVolume()
     {
         return (side * side * getHeight()) / 3.0;
     }

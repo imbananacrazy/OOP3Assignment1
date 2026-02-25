@@ -8,7 +8,7 @@ public class TriangularPrism extends Prism
 	}
 
 	@Override
-	double calcBaseArea() 
+	public double calcBaseArea() 
 	{
 		return (getSide() * getSide() * Math.sqrt(3))/4;
 	}
