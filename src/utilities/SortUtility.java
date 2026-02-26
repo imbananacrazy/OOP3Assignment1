@@ -28,7 +28,6 @@ public class SortUtility
         }
     }
     
-
 	public static <T> void selectionSort(T[] arr, Comparator<? super T> comp) 
     {
         int n = arr.length;
@@ -68,100 +67,95 @@ public class SortUtility
         }
     }
 	
-	public static void mergeSort(Shape[] arr, Comparator<Shape> comp) {
+	public static <T> void mergeSort(T[] arr, Comparator<? super T> comp) 
+    {
         mergeSortRecursive(arr, 0, arr.length - 1, comp);
     }
 
-    private static void mergeSortRecursive(Shape[] arr, int left, int right,
-                                           Comparator<Shape> comp) {
+	static <T> void mergeSortRecursive(T[] arr, int left, int right, Comparator<? super T> comp) 
+	{
+		if (left < right) 
+		{
+			int mid = (left + right) / 2;
 
-        if (left < right) {
+			mergeSortRecursive(arr, left, mid, comp);
+			mergeSortRecursive(arr, mid + 1, right, comp);
 
-            int mid = (left + right) / 2;
+			merge(arr, left, mid, right, comp);
+		}
+	}
 
-            mergeSortRecursive(arr, left, mid, comp);
-            mergeSortRecursive(arr, mid + 1, right, comp);
+	@SuppressWarnings("unchecked")
+	private static <T> void merge(T[] arr, int left, int mid, int right, Comparator<? super T> comp) 
+	{
+		int n1 = mid - left + 1;
+		int n2 = right - mid;
 
-            merge(arr, left, mid, right, comp);
-        }
-    }
+		T[] L = (T[]) new Object[n1];
+		T[] R = (T[]) new Object[n2];
 
-    private static void merge(Shape[] arr, int left, int mid, int right,
-                              Comparator<Shape> comp) {
+		for (int i = 0; i < n1; i++) L[i] = arr[left + i];
+		for (int j = 0; j < n2; j++) R[j] = arr[mid + 1 + j];
 
-        int n1 = mid - left + 1;
-        int n2 = right - mid;
+		int i = 0, j = 0, k = left;
 
-        Shape[] L = new Shape[n1];
-        Shape[] R = new Shape[n2];
+		while (i < n1 && j < n2) 
+		{
+			// Descending order
+			if (comp.compare(L[i], R[j]) > 0)  arr[k++] = L[i++];
+			else arr[k++] = R[j++];
+		}
 
-        for (int i = 0; i < n1; i++)
-            L[i] = arr[left + i];
+		while (i < n1) arr[k++] = L[i++];
 
-        for (int j = 0; j < n2; j++)
-            R[j] = arr[mid + 1 + j];
-
-        int i = 0, j = 0, k = left;
-
-        while (i < n1 && j < n2) {
-
-            if (comp.compare(L[i], R[j]) > 0) {
-                arr[k++] = L[i++];
-            } else {
-                arr[k++] = R[j++];
-            }
-        }
-
-        while (i < n1)
-            arr[k++] = L[i++];
-
-        while (j < n2)
-            arr[k++] = R[j++];
-    }
+		while (j < n2) arr[k++] = R[j++];
+	}
 
 	
-	 public static void quickSort(Shape[] arr, Comparator<Shape> comp) {
+	public static <T> void quickSort(T[] arr, Comparator<? super T> comp) 
+    {
         quickSortRecursive(arr, 0, arr.length - 1, comp);
     }
 
-    private static void quickSortRecursive(Shape[] arr, int low, int high,
-                                           Comparator<Shape> comp) {
+	private static <T> void quickSortRecursive(T[] arr, int low, int high, Comparator<? super T> comp) 
+	{
+		if (low < high) 
+		{
+			int pi = partition(arr, low, high, comp);
 
-        if (low < high) {
+			quickSortRecursive(arr, low, pi - 1, comp);
+			quickSortRecursive(arr, pi + 1, high, comp);
+		}
+	}
 
-            int pi = partition(arr, low, high, comp);
-
-            quickSortRecursive(arr, low, pi - 1, comp);
-            quickSortRecursive(arr, pi + 1, high, comp);
-        }
-    }
-
-    private static int partition(Shape[] arr, int low, int high,
-                                 Comparator<Shape> comp) {
-
-        Shape pivot = arr[high];
+	private static <T> int partition(T[] arr, int low, int high, Comparator<? super T> comp) 
+    {
+        T pivot = arr[high];
         int i = low - 1;
 
-        for (int j = low; j < high; j++) {
-
-            if (comp.compare(arr[j], pivot) > 0) {
+        for (int j = low; j < high; j++) 
+        {
+            if (comp.compare(arr[j], pivot) > 0) 
+            {
                 i++;
-                swap(arr, i, j);
+                T temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
             }
         }
 
-        swap(arr, i + 1, high);
+        T temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+
         return i + 1;
     }
 
-	
-	//edited gfg
 	public static <T> void heapSort(T[] arr, Comparator<? super T> comparator)
     {
         int n = arr.length;
 
-        for (int i = n / 2 - 1; i >= 0; i--)
-            heapify(arr, n, i, comparator);
+        for (int i = n / 2 - 1; i >= 0; i--) heapify(arr, n, i, comparator);
 
         for (int i = n - 1; i > 0; i--) 
         {
@@ -180,11 +174,8 @@ public class SortUtility
         int left = 2 * i + 1;
         int right = 2 * i + 2;
 
-        if (left < n && comparator.compare(arr[left], arr[smallest]) < 0)
-            smallest = left;
-
-        if (right < n && comparator.compare(arr[right], arr[smallest]) < 0)
-            smallest = right;
+        if (left < n && comparator.compare(arr[left], arr[smallest]) < 0) smallest = left;
+        if (right < n && comparator.compare(arr[right], arr[smallest]) < 0) smallest = right;
 
         if (smallest != i) 
         {
