@@ -68,15 +68,92 @@ public class SortUtility
         }
     }
 	
-	public static void mergeSort(Shape[] shapes, Comparator<Shape> comparator)
-	{
-		
-	}
+	public static void mergeSort(Shape[] arr, Comparator<Shape> comp) {
+        mergeSortRecursive(arr, 0, arr.length - 1, comp);
+    }
+
+    private static void mergeSortRecursive(Shape[] arr, int left, int right,
+                                           Comparator<Shape> comp) {
+
+        if (left < right) {
+
+            int mid = (left + right) / 2;
+
+            mergeSortRecursive(arr, left, mid, comp);
+            mergeSortRecursive(arr, mid + 1, right, comp);
+
+            merge(arr, left, mid, right, comp);
+        }
+    }
+
+    private static void merge(Shape[] arr, int left, int mid, int right,
+                              Comparator<Shape> comp) {
+
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
+
+        Shape[] L = new Shape[n1];
+        Shape[] R = new Shape[n2];
+
+        for (int i = 0; i < n1; i++)
+            L[i] = arr[left + i];
+
+        for (int j = 0; j < n2; j++)
+            R[j] = arr[mid + 1 + j];
+
+        int i = 0, j = 0, k = left;
+
+        while (i < n1 && j < n2) {
+
+            if (comp.compare(L[i], R[j]) > 0) {
+                arr[k++] = L[i++];
+            } else {
+                arr[k++] = R[j++];
+            }
+        }
+
+        while (i < n1)
+            arr[k++] = L[i++];
+
+        while (j < n2)
+            arr[k++] = R[j++];
+    }
+
 	
-	public static void quickSort(Shape[] shapes, Comparator<Shape> comparator)
-	{
-		
-	}
+	 public static void quickSort(Shape[] arr, Comparator<Shape> comp) {
+        quickSortRecursive(arr, 0, arr.length - 1, comp);
+    }
+
+    private static void quickSortRecursive(Shape[] arr, int low, int high,
+                                           Comparator<Shape> comp) {
+
+        if (low < high) {
+
+            int pi = partition(arr, low, high, comp);
+
+            quickSortRecursive(arr, low, pi - 1, comp);
+            quickSortRecursive(arr, pi + 1, high, comp);
+        }
+    }
+
+    private static int partition(Shape[] arr, int low, int high,
+                                 Comparator<Shape> comp) {
+
+        Shape pivot = arr[high];
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+
+            if (comp.compare(arr[j], pivot) > 0) {
+                i++;
+                swap(arr, i, j);
+            }
+        }
+
+        swap(arr, i + 1, high);
+        return i + 1;
+    }
+
 	
 	//edited gfg
 	public static <T> void heapSort(T[] arr, Comparator<? super T> comparator)
