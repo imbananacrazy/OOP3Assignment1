@@ -4,8 +4,8 @@ import shapes.*;
 
 public class SortUtility 
 {
-	public static void bubbleSort(Shape[] arr, Comparator<Shape> comparator) 
-	{
+	public static <T> void bubbleSort(T[] arr, Comparator<? super T> comparator) 
+    {
         int n = arr.length;
         boolean swapped;
 
@@ -17,7 +17,7 @@ public class SortUtility
             {
                 if (comparator.compare(arr[j], arr[j + 1]) < 0) 
                 {
-                    Shape temp = arr[j];
+                    T temp = arr[j];
                     arr[j] = arr[j + 1];
                     arr[j + 1] = temp;
                     swapped = true;
@@ -26,36 +26,36 @@ public class SortUtility
 
             if (!swapped) break;
         }
-	}
+    }
     
 
-	public static void selectionSort(Shape[] arr, Comparator<Shape> comp) 
-	{
-	    int n = arr.length;
+	public static <T> void selectionSort(T[] arr, Comparator<? super T> comp) 
+    {
+        int n = arr.length;
 
-	    for (int i = 0; i < n - 1; i++) {
+        for (int i = 0; i < n - 1; i++) 
+        {
+            int maxIndex = i;
 
-	        int maxIndex = i;
+            for (int j = i + 1; j < n; j++) 
+            {
+                if (comp.compare(arr[j], arr[maxIndex]) > 0)
+                    maxIndex = j;
+            }
 
-	        for (int j = i + 1; j < n; j++) 
-	        {
-	            if (comp.compare(arr[j], arr[maxIndex]) > 0) maxIndex = j;
-	        }
-
-	        Shape temp = arr[i];
-	        arr[i] = arr[maxIndex];
-	        arr[maxIndex] = temp;
-	    }
-	}
+            T temp = arr[i];
+            arr[i] = arr[maxIndex];
+            arr[maxIndex] = temp;
+        }
+    }
 	
-	public static void insertionSort(Shape[] arr, Comparator<Shape> comp) 
-	{
+	public static <T> void insertionSort(T[] arr, Comparator<? super T> comp) 
+    {
         int n = arr.length;
 
         for (int i = 1; i < n; i++) 
         {
-
-            Shape key = arr[i];
+            T key = arr[i];
             int j = i - 1;
 
             while (j >= 0 && comp.compare(arr[j], key) < 0) 
@@ -79,40 +79,43 @@ public class SortUtility
 	}
 	
 	//edited gfg
-	public static void heapSort(Shape[] shapes, Comparator<Shape> comparator)
-	{
-	    int n = shapes.length;
+	public static <T> void heapSort(T[] arr, Comparator<? super T> comparator)
+    {
+        int n = arr.length;
 
-	    for (int i = n / 2 - 1; i >= 0; i--) heapify(shapes, n, i, comparator);
+        for (int i = n / 2 - 1; i >= 0; i--)
+            heapify(arr, n, i, comparator);
 
-	    for (int i = n - 1; i > 0; i--) {
+        for (int i = n - 1; i > 0; i--) 
+        {
+            T temp = arr[0];
+            arr[0] = arr[i];
+            arr[i] = temp;
 
-	        Shape temp = shapes[0];
-	        shapes[0] = shapes[i];
-	        shapes[i] = temp;
+            heapify(arr, i, 0, comparator);
+        }
+    }
 
-	        heapify(shapes, i, 0, comparator);
-	    }
-	}
+	private static <T> void heapify(T[] arr, int n, int i, Comparator<? super T> comparator)
+    {
+        int smallest = i;
 
-	static void heapify(Shape[] arr, int n, int i, Comparator<Shape> comparator)
-	{
-	    int smallest = i;
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
 
-	    int left = 2 * i + 1;
-	    int right = 2 * i + 2;
+        if (left < n && comparator.compare(arr[left], arr[smallest]) < 0)
+            smallest = left;
 
-	    if (left < n && comparator.compare(arr[left], arr[smallest]) < 0) smallest = left;
-	    if (right < n && comparator.compare(arr[right], arr[smallest]) < 0) smallest = right;
+        if (right < n && comparator.compare(arr[right], arr[smallest]) < 0)
+            smallest = right;
 
-	    if (smallest != i) 
-	    {
+        if (smallest != i) 
+        {
+            T temp = arr[i];
+            arr[i] = arr[smallest];
+            arr[smallest] = temp;
 
-	        Shape temp = arr[i];
-	        arr[i] = arr[smallest];
-	        arr[smallest] = temp;
-
-	        heapify(arr, n, smallest, comparator);
-	    }
-	}
+            heapify(arr, n, smallest, comparator);
+        }
+    }
 }

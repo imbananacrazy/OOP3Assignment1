@@ -8,13 +8,42 @@ import java.util.Comparator;
 import shapes.*;
 import utilities.SortUtility;
 
+/**
+ * The SortManager class is responsible for managing the
+ * loading, sorting, and displaying of shape data
+ *
+ * <p>
+ * This class reads shape data from a file, stores the shapes in an array,
+ * calculates their height, volume, and base area, sorts them using a algorithm defined in the run configuration arguments and comparator, and prints
+ * selected results along with the sorting time
+ * </p>
+ *
+ * <p>
+ * Sorting algorithms include bubble sort, selection sort, insertion sort,
+ * merge sort, quick sort, and heap sort
+ * </p>
+ *
+ * @author our names
+ */
 public class SortManager
 {
+	/** Array of shapes loaded from the input file. */
     Shape[] shapes;
+    
+    /** Name of the input file containing shape data. */
     String fileName;
+    
+    /** Comparison type: 'h' = height, 'a' = area, 'v' = volume. */
     char compareType;
+    
+    /** Sort type: 'b' = bubble, 's' = selection, 'i' = insertion, 
+     *  'm' = merge, 'q' = quick, 'z' = heap. */
     char sortType;
 
+    /**
+     * Constructor: reads arguments defined in run configuration and parses them into their respective variables on class creation.
+     * @param args the arguments defined in run configuration (fileName, sortType, compareType).
+     */
     public SortManager(String[] args)
     {
         for(int i = 0; i < args.length; i++)
@@ -41,7 +70,9 @@ public class SortManager
         sortShapes();
     }
 
-
+    /**
+     * Loads shapes defined in fileName into an array of size defined in the first line of fileName. Display error is fileName is not found in /res folder.
+     */
     void loadShapes()
     {
         try
@@ -110,6 +141,32 @@ public class SortManager
     }
 
 
+    /**
+     * Sorts shapes based on run configuration arguments.
+     * 
+     * <p>
+     * After sorting is complete, it prints results and time it took to sort in ms.
+     * </p>
+     * 
+     * <p>
+     * Comparison types:
+     * <ul>
+     *     <li>h = height</li>
+     *     <li>a = base area</li>
+     *     <li>v = volume</li>
+     * </ul>
+     * 
+     * Sorting algorithms:
+     * <ul>
+     *     <li>b = bubble sort</li>
+     *     <li>s = selection sort</li>
+     *     <li>i = insertion sort</li>
+     *     <li>m = merge sort</li>
+     *     <li>q = quick sort</li>
+     *     <li>z = heap sort</li>
+     * </ul>
+     * </p>
+     */
     void sortShapes()
     {
         Comparator<Shape> comparator;
@@ -142,8 +199,8 @@ public class SortManager
         System.out.println("Sorting Time: " + timeMs + " ms");
     }
 
-
-    private void printResults() 
+    /** Prints the first, last, and every 1000th shape and its corresponding data defined in configuration arguments (compareType) */
+    void printResults() 
     {
         if (shapes.length == 0) return;
         
