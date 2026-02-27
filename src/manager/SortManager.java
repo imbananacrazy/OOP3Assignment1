@@ -30,8 +30,8 @@ public class SortManager
 	/** Array of shapes loaded from the input file. */
     Shape[] shapes;
     
-    /** Name of the input file containing shape data. */
-    String fileName;
+    /** Path of the input file containing shape data. */
+    String filePath;
     
     /** Comparison type: 'h' = height, 'a' = area, 'v' = volume. */
     char compareType;
@@ -50,7 +50,7 @@ public class SortManager
         {
             String arg = args[i].toLowerCase();
 
-            if(arg.startsWith("-f")) fileName = arg.substring(2);
+            if(arg.startsWith("-f")) filePath = arg.substring(2);
             else if(arg.startsWith("-t")) compareType = arg.substring(2).charAt(0);
             else if(arg.startsWith("-s")) sortType = arg.substring(2).charAt(0);
             else
@@ -60,7 +60,7 @@ public class SortManager
             }
         }
 
-        if(fileName == null || compareType == 0 || sortType == 0)
+        if(filePath == null || compareType == 0 || sortType == 0)
         {
             System.out.println("Invalid arguments.");
             System.exit(1);
@@ -77,7 +77,7 @@ public class SortManager
     {
         try
         {
-        	File file = new File("res/" + fileName);
+        	File file = new File(filePath);
             Scanner input = new Scanner(file);
 
             int total = input.nextInt();

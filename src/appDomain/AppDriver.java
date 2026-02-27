@@ -18,9 +18,8 @@ public class AppDriver
      * Application entry point.
      *
      * <p>
-     * Accepts command-line arguments that control how the sorting
-     * application executes (for example: input file name, sorting
-     * algorithm selection, comparator type, etc.).
+     * Accepts run configuration arguments that control how the sorting
+     * application executes (input file name, sorting algorithm, comparator type)
      * </p>
      *
      * @param args the arguments to take in from the run configuration and pass to SortManager
