@@ -2,8 +2,31 @@ package utilities;
 import java.util.Comparator;
 import shapes.*;
 
+/**
+ * The SortUtility class contains static generic sorting algorithms.
+ * 
+ * <p>
+ * All sorting methods sort in descending order based on the
+ * Comparator provided.
+ * </p>
+ * 
+ * <p>
+ * Supported algorithms:
+ * Bubble Sort, Selection Sort, Insertion Sort,
+ * Merge Sort, Quick Sort, and Heap Sort.
+ * </p>
+ * 
+ * @author Your Names
+ */
 public class SortUtility 
 {
+	/**
+     * Sorts an array using the Bubble Sort algorithm.
+     * 
+     * @param <T> the type of elements in the array
+     * @param arr the array to be sorted
+     * @param comparator the comparator used for comparison
+     */
 	public static <T> void bubbleSort(T[] arr, Comparator<? super T> comparator) 
     {
         int n = arr.length;
@@ -15,6 +38,7 @@ public class SortUtility
 
             for (int j = 0; j < n - i - 1; j++) 
             {
+				// Compare adjacent elements
                 if (comparator.compare(arr[j], arr[j + 1]) < 0) 
                 {
                     T temp = arr[j];
@@ -23,11 +47,18 @@ public class SortUtility
                     swapped = true;
                 }
             }
-
+			// Stop early if no swaps happened
             if (!swapped) break;
         }
     }
-    
+	
+    /**
+     * Sorts an array using the Selection Sort algorithm.
+     * 
+     * @param <T> the type of elements
+     * @param arr the array to sort
+     * @param comp the comparator used for ordering
+     */
 	public static <T> void selectionSort(T[] arr, Comparator<? super T> comp) 
     {
         int n = arr.length;
@@ -38,16 +69,24 @@ public class SortUtility
 
             for (int j = i + 1; j < n; j++) 
             {
+				// Find the largest element for descending order
                 if (comp.compare(arr[j], arr[maxIndex]) > 0)
                     maxIndex = j;
             }
-
+			// Swap with current position
             T temp = arr[i];
             arr[i] = arr[maxIndex];
             arr[maxIndex] = temp;
         }
     }
-	
+
+	/**
+     * Sorts an array using the Insertion Sort algorithm.
+     * 
+     * @param <T> the type of elements
+     * @param arr the array to sort
+     * @param comp the comparator used for ordering
+     */
 	public static <T> void insertionSort(T[] arr, Comparator<? super T> comp) 
     {
         int n = arr.length;
@@ -56,7 +95,8 @@ public class SortUtility
         {
             T key = arr[i];
             int j = i - 1;
-
+			
+			// Shift elements to the right to make room
             while (j >= 0 && comp.compare(arr[j], key) < 0) 
             {
                 arr[j + 1] = arr[j];
@@ -67,11 +107,21 @@ public class SortUtility
         }
     }
 	
+	/**
+     * Sorts an array using the Merge Sort algorithm.
+     * 
+     * @param <T> the type of elements
+     * @param arr the array to sort
+     * @param comp the comparator used for ordering
+     */
 	public static <T> void mergeSort(T[] arr, Comparator<? super T> comp) 
     {
         mergeSortRecursive(arr, 0, arr.length - 1, comp);
     }
-
+	
+	/**
+     * Recursive helper method for Merge Sort.
+     */
 	static <T> void mergeSortRecursive(T[] arr, int left, int right, Comparator<? super T> comp) 
 	{
 		if (left < right) 
@@ -84,7 +134,10 @@ public class SortUtility
 			merge(arr, left, mid, right, comp);
 		}
 	}
-
+	
+	/**
+     * Merges two sorted halves of an array.
+     */
 	@SuppressWarnings("unchecked")
 	private static <T> void merge(T[] arr, int left, int mid, int right, Comparator<? super T> comp) 
 	{
@@ -111,12 +164,21 @@ public class SortUtility
 		while (j < n2) arr[k++] = R[j++];
 	}
 
-	
+	/**
+     * Sorts an array using the Quick Sort algorithm.
+     * 
+     * @param <T> the type of elements
+     * @param arr the array to sort
+     * @param comp the comparator used for ordering
+     */
 	public static <T> void quickSort(T[] arr, Comparator<? super T> comp) 
     {
         quickSortRecursive(arr, 0, arr.length - 1, comp);
     }
 
+	/**
+     * Recursive helper for Quick Sort.
+     */
 	private static <T> void quickSortRecursive(T[] arr, int low, int high, Comparator<? super T> comp) 
 	{
 		if (low < high) 
@@ -128,6 +190,9 @@ public class SortUtility
 		}
 	}
 
+	/**
+     * Partitions the array around a pivot element.
+     */
 	private static <T> int partition(T[] arr, int low, int high, Comparator<? super T> comp) 
     {
         T pivot = arr[high];
@@ -150,13 +215,22 @@ public class SortUtility
 
         return i + 1;
     }
-
+	
+	/**
+     * Sorts an array using the Heap Sort algorithm.
+     * 
+     * @param <T> the type of elements
+     * @param arr the array to sort
+     * @param comparator the comparator used for ordering
+     */
 	public static <T> void heapSort(T[] arr, Comparator<? super T> comparator)
     {
         int n = arr.length;
-
+		
+		// Build heap
         for (int i = n / 2 - 1; i >= 0; i--) heapify(arr, n, i, comparator);
-
+		
+		// Extract elements one by one
         for (int i = n - 1; i > 0; i--) 
         {
             T temp = arr[0];
@@ -166,7 +240,10 @@ public class SortUtility
             heapify(arr, i, 0, comparator);
         }
     }
-
+	
+	/**
+     * Maintains the heap property.
+     */
 	private static <T> void heapify(T[] arr, int n, int i, Comparator<? super T> comparator)
     {
         int smallest = i;
